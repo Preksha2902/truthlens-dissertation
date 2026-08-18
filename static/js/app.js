@@ -3,10 +3,10 @@
    ============================================================ */
 
 // Local dev talks to the FastAPI server on 127.0.0.1:8000; the deployed
-// site talks to the Hugging Face Space the backend is hosted on.
+// site talks to the Cloud Run service the backend is hosted on.
 const API_URL = ["localhost", "127.0.0.1"].includes(window.location.hostname)
   ? "http://127.0.0.1:8000"
-  : "https://REPLACE-WITH-HF-SPACE-URL.hf.space";
+  : "https://truthlens-api-940351316561.us-central1.run.app";
 
 /* ── Tab switching ──────────────────────────────────────────── */
 function switchTab(name, el) {
