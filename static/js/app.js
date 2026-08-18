@@ -1,14 +1,7 @@
-/* ============================================================
-   TruthLens - app.js
-   ============================================================ */
-
-// Local dev talks to the FastAPI server on 127.0.0.1:8000; the deployed
-// site talks to the Cloud Run service the backend is hosted on.
 const API_URL = ["localhost", "127.0.0.1"].includes(window.location.hostname)
   ? "http://127.0.0.1:8000"
   : "https://truthlens-api-940351316561.us-central1.run.app";
 
-/* ── Tab switching ──────────────────────────────────────────── */
 function switchTab(name, el) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -16,7 +9,6 @@ function switchTab(name, el) {
   document.getElementById('panel-' + name).classList.add('active');
 }
 
-/* ── Word count ─────────────────────────────────────────────── */
 const textInput = document.getElementById('text-input');
 if (textInput) {
   textInput.addEventListener('input', () => {
@@ -26,7 +18,6 @@ if (textInput) {
   });
 }
 
-/* ── File handling ──────────────────────────────────────────── */
 function handleFile(event, type) {
   const file = event.target.files[0];
   if (!file) return;
@@ -74,7 +65,6 @@ function showAudPreview(file) {
   }
 }
 
-/* ── Main analysis function ─────────────────────────────────── */
 async function runAnalysis(type) {
   if (type === 'text') {
     const words = document.getElementById('text-input')
@@ -109,7 +99,6 @@ async function runAnalysis(type) {
       data = await response.json();
 
     } else if (type === 'image') {
-      // Get uploaded file
       const fileInput = document.getElementById('img-file');
       if (!fileInput.files || fileInput.files.length === 0) {
         alert('Please upload an image first');
@@ -122,9 +111,8 @@ async function runAnalysis(type) {
       const formData  = new FormData();
       formData.append('file', file);
 
-      // Get selected model
       const modelSel = document.getElementById('image-model');
-      const modelVal = modelSel.value; // passes resnet_v1, vit_v1, resnet_v2, or vit_v2
+      const modelVal = modelSel.value;
 
       const response = await fetch(`${API_URL}/predict/image?model=${modelVal}`, {
         method: 'POST',
@@ -134,7 +122,6 @@ async function runAnalysis(type) {
       data = await response.json();
 
     } else {
-      // Get uploaded file
       const fileInput = document.getElementById('aud-file');
       if (!fileInput.files || fileInput.files.length === 0) {
         alert('Please upload an audio file first');
@@ -147,9 +134,8 @@ async function runAnalysis(type) {
       const formData  = new FormData();
       formData.append('file', file);
 
-      // Get selected model
       const modelSel = document.getElementById('audio-model');
-      const modelVal = modelSel.value; // passes mfcc_v3 or wav2vec2_v3
+      const modelVal = modelSel.value;
 
       const response = await fetch(`${API_URL}/predict/audio?model=${modelVal}`, {
         method: 'POST',
@@ -177,7 +163,6 @@ async function runAnalysis(type) {
   }
 }
 
-/* ── Show result ────────────────────────────────────────────── */
 function showResult(type, data) {
   const empty  = document.getElementById(type + '-empty');
   const result = document.getElementById(type + '-result');
@@ -186,7 +171,6 @@ function showResult(type, data) {
   if (!result) return;
   result.style.display = 'flex';
 
-  // Determine icon and class
   let iconClass, icon;
   if (data.label === 'AI-Generated') {
     iconClass = 'ai';        icon = '✗';
@@ -198,7 +182,6 @@ function showResult(type, data) {
     iconClass = 'uncertain'; icon = '?';
   }
 
-  // Set verdict
   const vicon = document.getElementById(type + '-verdict-icon');
   if (vicon) {
     vicon.textContent = icon;
@@ -211,7 +194,6 @@ function showResult(type, data) {
   const vpct = document.getElementById(type + '-verdict-pct');
   if (vpct) vpct.textContent = data.ai_probability + '%';
 
-  // Subtitle with model name
   const subEl = document.getElementById(type + '-verdict-sub');
   if (subEl) {
     const sel = document.getElementById(type + '-model');
@@ -219,7 +201,6 @@ function showResult(type, data) {
     subEl.textContent = data.confidence + ' · ' + modelName;
   }
 
-  // Animate confidence bars
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
       const barAi    = document.getElementById(type + '-bar-ai');
@@ -234,7 +215,6 @@ function showResult(type, data) {
     });
   });
 
-  // Signals
   const sigEl = document.getElementById(type + '-signals');
   if (sigEl) {
     sigEl.innerHTML = data.signals
@@ -242,7 +222,6 @@ function showResult(type, data) {
       .join('');
   }
 
-  // Model used
   const modelUsed = document.getElementById(type + '-model-used');
   if (modelUsed) {
     const sel = document.getElementById(type + '-model');
@@ -250,7 +229,6 @@ function showResult(type, data) {
   }
 }
 
-/* ── Flash button ───────────────────────────────────────────── */
 function flashBtn(type) {
   const btn = document.querySelector(`#panel-${type} .analyse-btn`);
   if (!btn) return;
@@ -262,7 +240,6 @@ function flashBtn(type) {
   }, 1200);
 }
 
-/* ── Stat counters ──────────────────────────────────────────── */
 function animateCounters() {
   document.querySelectorAll('.stat-num').forEach(el => {
     const target   = parseFloat(el.dataset.val);
@@ -288,7 +265,6 @@ if (statsBar) {
   }, { threshold: 0.4 }).observe(statsBar);
 }
 
-/* ── Navbar scroll ──────────────────────────────────────────── */
 window.addEventListener('scroll', () => {
   const nav = document.querySelector('.nav');
   if (nav) {
