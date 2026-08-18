@@ -1,0 +1,9 @@
+# Backend has its own separate repo (deployed independently to Hugging Face Spaces)
+backend/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.claude/

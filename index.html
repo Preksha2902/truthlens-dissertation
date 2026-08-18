@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TruthLens - AI Content Detector</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="static/css/style.css"/>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <div class="nav-logo">
+        <div class="logo-icon">◉</div>
+        <span>TruthLens</span>
+      </div>
+      <div class="nav-links">
+        <a href="#detector">Detector</a>
+        <a href="#about">About</a>
+        <a href="#results">Results</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="blob b1"></div>
+      <div class="blob b2"></div>
+      <div class="blob b3"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-tag">MSc Dissertation · University of Liverpool · 2026</div>
+      <h1>Can you tell what's<br/><span class="accent">real</span> anymore?</h1>
+      <p>A multimodal AI-generated content detection framework across text, image, and audio - built for researchers, educators, and industry.</p>
+      <div class="hero-btns">
+        <a href="#detector" class="btn-primary">Try the detector</a>
+        <a href="#about" class="btn-ghost">Learn more</a>
+      </div>
+      <div class="hero-pills">
+        <span class="pill pill-t">📝 Text</span>
+        <span class="pill pill-i">🖼 Image</span>
+        <span class="pill pill-a">🎵 Audio</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat">
+      <span class="stat-num" data-val="3">0</span>
+      <span class="stat-label">Modalities</span>
+    </div>
+    <div class="stat-sep"></div>
+    <div class="stat">
+      <span class="stat-num" data-val="7">0</span>
+      <span class="stat-label">Models compared</span>
+    </div>
+    <div class="stat-sep"></div>
+    <div class="stat">
+      <span class="stat-num" data-val="99">0</span><span class="stat-sym">%</span>
+      <span class="stat-label">Text accuracy</span>
+    </div>
+    <div class="stat-sep"></div>
+    <div class="stat">
+      <span class="stat-num" data-val="8">0</span>
+      <span class="stat-label">Datasets used</span>
+    </div>
+  </div>
+
+  <!-- DETECTOR -->
+  <section class="detector-section" id="detector">
+    <div class="section-label">Live Demo</div>
+    <h2>Analyse your content</h2>
+    <p class="section-sub">Paste text, upload an image, or upload audio to detect whether it was created by a human or AI.</p>
+
+    <div class="detector-card">
+
+      <!-- TABS -->
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab('text', this)">
+          <span class="tab-icon">📝</span> Text
+        </button>
+        <button class="tab" onclick="switchTab('image', this)">
+          <span class="tab-icon">🖼</span> Image
+        </button>
+        <button class="tab" onclick="switchTab('audio', this)">
+          <span class="tab-icon">🎵</span> Audio
+        </button>
+      </div>
+
+      <!-- TEXT PANEL -->
+      <div class="panel active" id="panel-text">
+        <div class="panel-grid">
+          <div class="input-side">
+            <label class="field-label">Paste your text</label>
+            <textarea id="text-input" placeholder="Paste any content here - an essay, article, email, social post - and we'll analyse whether it was written by a human or AI...&#10;&#10;Minimum 50 words recommended."></textarea>
+            <div class="input-meta">
+              <span id="word-count">0 words</span>
+              <span class="meta-hint">50+ words required for reliable detection</span>
+            </div>
+            <div class="progress-wrap" id="text-progress">
+              <div class="progress-fill" id="text-fill"></div>
+            </div>
+            <button class="analyse-btn" onclick="runAnalysis('text')">
+              Analyse text <span class="btn-arrow">→</span>
+            </button>
+          </div>
+          <div class="result-side">
+            <div class="result-empty" id="text-empty">
+              <div class="empty-icon">◉</div>
+              <p>Results appear here</p>
+              <span>Paste text and click analyse</span>
+            </div>
+            <div class="result-card" id="text-result" style="display:none">
+              <div class="verdict-box" id="text-verdict-box">
+                <div class="verdict-icon" id="text-verdict-icon">⚠</div>
+                <div class="verdict-info">
+                  <div class="verdict-label" id="text-verdict-label">AI-Generated</div>
+                  <div class="verdict-sub" id="text-verdict-sub">High confidence · RoBERTa</div>
+                </div>
+                <div class="verdict-pct" id="text-verdict-pct">87%</div>
+              </div>
+              <div class="bars-section">
+                <div class="bars-title">Confidence breakdown</div>
+                <div class="bar-row">
+                  <span class="bar-label">AI-generated</span>
+                  <div class="bar-track">
+                    <div class="bar-fill bar-red" id="text-bar-ai"></div>
+                  </div>
+                  <span class="bar-pct" id="text-pct-ai">87%</span>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-label">Human-written</span>
+                  <div class="bar-track">
+                    <div class="bar-fill bar-green" id="text-bar-human"></div>
+                  </div>
+                  <span class="bar-pct" id="text-pct-human">13%</span>
+                </div>
+              </div>
+              <div class="signals-section">
+                <div class="signals-title">Detected signals</div>
+                <div class="signals-list" id="text-signals"></div>
+              </div>
+              <div class="result-meta">
+                Model: <code id="text-model-used">RoBERTa-base</code>
+                <span class="meta-sep">·</span>
+                Dataset: <code>HC3 + RAID</code>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- IMAGE PANEL -->
+      <div class="panel" id="panel-image">
+        <div class="panel-grid">
+          <div class="input-side">
+            <label class="field-label">Upload an image</label>
+            <div class="drop-zone" id="img-drop"
+              onclick="document.getElementById('img-file').click()"
+              ondragover="event.preventDefault();this.classList.add('drag-active')"
+              ondragleave="this.classList.remove('drag-active')"
+              ondrop="handleDrop(event,'image')">
+              <input type="file" id="img-file" accept="image/*" style="display:none" onchange="handleFile(event,'image')"/>
+              <div class="drop-inner" id="img-drop-inner">
+                <div class="drop-icon">🖼</div>
+                <p><strong>Drop image here</strong> or click to browse</p>
+                <span>PNG · JPG · WEBP · Max 10MB</span>
+              </div>
+              <div class="file-preview" id="img-preview" style="display:none">
+                <img id="img-preview-img" alt="preview"/>
+                <span id="img-preview-name"></span>
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field-group">
+                <label class="field-label">Model</label>
+                <select id="image-model" class="select-input">
+                  <option value="resnet_v2" selected>ResNet-50 - Portrait & Faces</option>
+                  <option value="resnet_v1">ResNet-50 - General Images</option>
+                </select>
+                <p style="font-size:11px; color:var(--text-tertiary); margin-top:5px;">
+                  Portrait & Faces - for selfies and phone photos. General Images - for landscapes, objects and artwork.
+                  Both are ResNet-50 models fine-tuned and validated on real-world photos; the app also auto-detects
+                  faces and falls back to the right model if you pick the wrong one.
+                </p>
+              </div>
+            </div>
+            <div class="progress-wrap" id="image-progress">
+              <div class="progress-fill" id="image-fill"></div>
+            </div>
+            <button class="analyse-btn" onclick="runAnalysis('image')">
+              Analyse image <span class="btn-arrow">→</span>
+            </button>
+          </div>
+          <div class="result-side">
+            <div class="result-empty" id="image-empty">
+              <div class="empty-icon">◉</div>
+              <p>Results appear here</p>
+              <span>Upload an image and click analyse</span>
+            </div>
+            <div class="result-card" id="image-result" style="display:none">
+              <div class="verdict-box" id="image-verdict-box">
+                <div class="verdict-icon" id="image-verdict-icon">?</div>
+                <div class="verdict-info">
+                  <div class="verdict-label" id="image-verdict-label">Likely AI-Generated</div>
+                  <div class="verdict-sub" id="image-verdict-sub">Medium confidence · ResNet-50</div>
+                </div>
+                <div class="verdict-pct" id="image-verdict-pct">62%</div>
+              </div>
+              <div class="bars-section">
+                <div class="bars-title">Confidence breakdown</div>
+                <div class="bar-row">
+                  <span class="bar-label">AI-generated</span>
+                  <div class="bar-track">
+                    <div class="bar-fill bar-red" id="image-bar-ai"></div>
+                  </div>
+                  <span class="bar-pct" id="image-pct-ai">62%</span>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-label">Human-made</span>
+                  <div class="bar-track">
+                    <div class="bar-fill bar-green" id="image-bar-human"></div>
+                  </div>
+                  <span class="bar-pct" id="image-pct-human">38%</span>
+                </div>
+              </div>
+              <div class="signals-section">
+                <div class="signals-title">Detected signals</div>
+                <div class="signals-list" id="image-signals"></div>
+              </div>
+              <div class="result-meta">
+                Model: <code id="image-model-used">ResNet-50</code>
+                <span class="meta-sep">·</span>
+                Dataset: <code>CIFAKE + OpenFake</code>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AUDIO PANEL -->
+      <div class="panel" id="panel-audio">
+        <div class="panel-grid">
+          <div class="input-side">
+            <label class="field-label">Upload audio</label>
+            <div class="drop-zone" id="aud-drop"
+              onclick="document.getElementById('aud-file').click()"
+              ondragover="event.preventDefault();this.classList.add('drag-active')"
+              ondragleave="this.classList.remove('drag-active')"
+              ondrop="handleDrop(event,'audio')">
+              <input type="file" id="aud-file" accept="audio/*" style="display:none" onchange="handleFile(event,'audio')"/>
+              <div class="drop-inner" id="aud-drop-inner">
+                <div class="drop-icon">🎵</div>
+                <p><strong>Drop audio here</strong> or click to browse</p>
+                <span>MP3 · WAV · FLAC · Max 25MB</span>
+              </div>
+              <div class="file-preview" id="aud-preview" style="display:none">
+                <div class="audio-wave" id="audio-wave"></div>
+                <span id="aud-preview-name"></span>
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field-group">
+                <label class="field-label">Model</label>
+                <select id="audio-model" class="select-input">
+                  <option value="wav2vec2_v3" selected>Wav2Vec2 (v3)</option>
+                  <option value="mfcc_v3">MFCC + CNN (v3)</option>
+                </select>
+                <p style="font-size:11px; color:var(--text-tertiary); margin-top:5px;">
+                  Both fine-tuned on ASVspoof 2019 with codec-compression augmentation (v3).
+                  Real-world generalisation is still limited - treat results as experimental, see Model performance below.
+                </p>
+              </div>
+            </div>
+            <div class="progress-wrap" id="audio-progress">
+              <div class="progress-fill" id="audio-fill"></div>
+            </div>
+            <button class="analyse-btn" onclick="runAnalysis('audio')">
+              Analyse audio <span class="btn-arrow">→</span>
+            </button>
+          </div>
+          <div class="result-side">
+            <div class="result-empty" id="audio-empty">
+              <div class="empty-icon">◉</div>
+              <p>Results appear here</p>
+              <span>Upload audio and click analyse</span>
+            </div>
+            <div class="result-card" id="audio-result" style="display:none">
+              <div class="verdict-box" id="audio-verdict-box">
+                <div class="verdict-icon" id="audio-verdict-icon">✗</div>
+                <div class="verdict-info">
+                  <div class="verdict-label" id="audio-verdict-label">AI-Generated</div>
+                  <div class="verdict-sub" id="audio-verdict-sub">High confidence · Wav2Vec2</div>
+                </div>
+                <div class="verdict-pct" id="audio-verdict-pct">91%</div>
+              </div>
+              <div class="bars-section">
+                <div class="bars-title">Confidence breakdown</div>
+                <div class="bar-row">
+                  <span class="bar-label">AI-generated</span>
+                  <div class="bar-track">
+                    <div class="bar-fill bar-red" id="audio-bar-ai"></div>
+                  </div>
+                  <span class="bar-pct" id="audio-pct-ai">91%</span>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-label">Human voice</span>
+                  <div class="bar-track">
+                    <div class="bar-fill bar-green" id="audio-bar-human"></div>
+                  </div>
+                  <span class="bar-pct" id="audio-pct-human">9%</span>
+                </div>
+              </div>
+              <div class="signals-section">
+                <div class="signals-title">Detected signals</div>
+                <div class="signals-list" id="audio-signals"></div>
+              </div>
+              <div class="result-meta">
+                Model: <code id="audio-model-used">Wav2Vec2 (v3)</code>
+                <span class="meta-sep">·</span>
+                Dataset: <code>ASVspoof 2019 + codec augmentation</code>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about-section" id="about">
+    <div class="about-inner">
+      <div class="about-text">
+        <div class="section-label">Research</div>
+        <h2>About TruthLens</h2>
+        <p>TruthLens is a comparative multimodal framework for detecting AI-generated content across text, image, and audio. Each modality uses independently trained deep learning models evaluated on publicly available benchmark datasets.</p>
+        <p>The framework addresses a critical gap in existing research - most detection tools handle only one content type. TruthLens evaluates all three modalities under a consistent framework, enabling direct cross-modal performance comparison, and reports honestly where a modality's real-world generalisation is still limited.</p>
+        <div class="about-facts">
+          <div class="fact">
+            <span class="fact-key">Institution</span>
+            <span class="fact-val">University of Liverpool</span>
+          </div>
+          <div class="fact">
+            <span class="fact-key">Programme</span>
+            <span class="fact-val">MSc Advanced Data Science & AI</span>
+          </div>
+          <div class="fact">
+            <span class="fact-key">Year</span>
+            <span class="fact-val">2025 – 2026</span>
+          </div>
+        </div>
+      </div>
+      <div class="about-cards">
+        <div class="about-card card-t">
+          <div class="card-head">📝 Text</div>
+          <p>A single RoBERTa-base classifier fine-tuned on HC3, cross-evaluated on RAID for out-of-distribution generalisation. Detects low perplexity, uniform sentence structure, and hedging language patterns.</p>
+          <div class="card-chips">
+            <span>RoBERTa-base</span><span>HC3</span><span>RAID</span>
+          </div>
+        </div>
+        <div class="about-card card-i">
+          <div class="card-head">🖼 Image</div>
+          <p>Two ResNet-50 models: one for portrait/face photos, one for general images, plus automatic face-detection routing between them. Both were originally trained on CIFAKE and then fine-tuned - the general model on OpenFake - after CIFAKE alone proved to be a dataset-artifact shortcut rather than a genuine real-vs-AI signal on real-world photos. Two ViT-B/16 variants exist as an experimental comparison.</p>
+          <div class="card-chips">
+            <span>ResNet-50</span><span>ViT-B/16</span><span>CIFAKE</span><span>OpenFake</span>
+          </div>
+        </div>
+        <div class="about-card card-a">
+          <div class="card-head">🎵 Audio</div>
+          <p>Wav2Vec2 and MFCC+CNN fine-tuned on ASVspoof 2019 with genuine codec-compression augmentation (v3). Four successive training attempts improved benchmark scores, but real-world generalisation to unseen recording conditions remains an open problem, honestly reported rather than hidden.</p>
+          <div class="card-chips">
+            <span>Wav2Vec2</span><span>MFCC+CNN</span><span>ASVspoof</span><span>WaveFake</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTS TABLE -->
+  <section class="results-section" id="results">
+    <div class="section-label">Evaluation</div>
+    <h2>Model performance</h2>
+    <p class="section-sub">All models evaluated on held-out test sets with cross-generator generalisation testing.</p>
+    <div class="table-wrap">
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th>Modality</th>
+            <th>Model</th>
+            <th>Trained on</th>
+            <th>Tested on</th>
+            <th>Accuracy</th>
+            <th>F1 Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-best">
+            <td><span class="mod-tag tag-t">Text</span></td>
+            <td class="mono">RoBERTa-base</td>
+            <td class="mono">HC3</td>
+            <td class="mono">HC3</td>
+            <td class="val-good">99.76%</td>
+            <td class="val-good">0.9976</td>
+          </tr>
+          <tr>
+            <td><span class="mod-tag tag-t">Text</span></td>
+            <td class="mono">RoBERTa-base</td>
+            <td class="mono">HC3</td>
+            <td class="mono">RAID</td>
+            <td class="val-mid">68.27%</td>
+            <td class="val-mid">0.6478</td>
+          </tr>
+          <tr class="row-best">
+            <td><span class="mod-tag tag-i">Image</span></td>
+            <td class="mono">ResNet-50 (Portrait)</td>
+            <td class="mono">AI vs Real Faces</td>
+            <td class="mono">AI vs Real Faces</td>
+            <td class="val-good">98.12%</td>
+            <td class="val-good">0.9807</td>
+          </tr>
+          <tr>
+            <td><span class="mod-tag tag-i">Image</span></td>
+            <td class="mono">ResNet-50 (Portrait)</td>
+            <td class="mono">AI vs Real Faces</td>
+            <td class="mono">DRAGON (cross-generator)</td>
+            <td class="val-mid">95.55%</td>
+            <td class="val-mid">0.9555</td>
+          </tr>
+          <tr>
+            <td><span class="mod-tag tag-i">Image</span></td>
+            <td class="mono">ViT-B/16 (Portrait)</td>
+            <td class="mono">AI vs Real Faces</td>
+            <td class="mono">DRAGON (cross-generator)</td>
+            <td class="val-mid">90.72%</td>
+            <td class="val-mid">0.9070</td>
+          </tr>
+          <tr>
+            <td><span class="mod-tag tag-i">Image</span></td>
+            <td class="mono">ResNet-50 (General)</td>
+            <td class="mono">CIFAKE → OpenFake fine-tune</td>
+            <td class="mono">OpenFake (validation split)</td>
+            <td class="val-mid">70.00%</td>
+            <td class="val-mid">0.6993</td>
+          </tr>
+          <tr>
+            <td><span class="mod-tag tag-i">Image</span></td>
+            <td class="mono">ResNet-50 (General)</td>
+            <td class="mono">CIFAKE → OpenFake fine-tune</td>
+            <td class="mono">Real-world photos (n=4)</td>
+            <td class="val-good">4/4 correct</td>
+            <td class="mono">-</td>
+          </tr>
+          <tr>
+            <td><span class="mod-tag tag-a">Audio</span></td>
+            <td class="mono">Wav2Vec2 (v1)</td>
+            <td class="mono">WaveFake</td>
+            <td class="mono">WaveFake (held-out)</td>
+            <td class="val-good">99.53%</td>
+            <td class="val-good">0.9953</td>
+          </tr>
+          <tr>
+            <td><span class="mod-tag tag-a">Audio</span></td>
+            <td class="mono">MFCC+CNN (v1)</td>
+            <td class="mono">WaveFake</td>
+            <td class="mono">WaveFake (held-out)</td>
+            <td class="val-mid">87.40%</td>
+            <td class="val-mid">0.8722</td>
+          </tr>
+          <tr class="row-best">
+            <td><span class="mod-tag tag-a">Audio</span></td>
+            <td class="mono">Wav2Vec2 (v3, final)</td>
+            <td class="mono">ASVspoof + real codec compression</td>
+            <td class="mono">ASVspoof (held-out)</td>
+            <td class="val-good">99.20%</td>
+            <td class="val-good">0.9920</td>
+          </tr>
+          <tr>
+            <td><span class="mod-tag tag-a">Audio</span></td>
+            <td class="mono">MFCC+CNN (v3, final)</td>
+            <td class="mono">ASVspoof + real codec compression</td>
+            <td class="mono">ASVspoof (held-out)</td>
+            <td class="val-mid">96.13%</td>
+            <td class="val-mid">0.9613</td>
+          </tr>
+          <tr>
+            <td><span class="mod-tag tag-a">Audio</span></td>
+            <td class="mono">Wav2Vec2 (v3, final)</td>
+            <td class="mono">ASVspoof + real codec compression</td>
+            <td class="mono">Real-world voice recording</td>
+            <td class="val-bad">99.9% AI (misclassified)</td>
+            <td class="mono">-</td>
+          </tr>
+          <tr>
+            <td><span class="mod-tag tag-a">Audio</span></td>
+            <td class="mono">MFCC+CNN (v3, final)</td>
+            <td class="mono">ASVspoof + real codec compression</td>
+            <td class="mono">Real-world voice recording</td>
+            <td class="val-bad">85.2% AI (misclassified)</td>
+            <td class="mono">-</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">Benchmark and real-world results diverge in both directions here, not just one. Audio's final models (v3) score 96-99% on held-out data yet still misclassify a real voice recording. The general-image fine-tune shows the opposite pattern: only 70.00% on its own OpenFake validation split, yet 4/4 correct on independently-sourced real-world photos. Both are reported as measured, not smoothed into a single "it works" number. See "About TruthLens" for details.</p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-logo">◉ TruthLens</div>
+      <p>MSc Advanced Data Science & AI · University of Liverpool · 2026</p>
+      <p class="footer-note">For research and educational purposes only. Results are probabilistic and should not be used as sole evidence of AI generation.</p>
+    </div>
+  </footer>
+
+  <script src="static/js/app.js"></script>
+</body>
+</html>
