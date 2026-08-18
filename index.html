@@ -411,6 +411,22 @@
             <td class="val-mid">68.27%</td>
             <td class="val-mid">0.6478</td>
           </tr>
+          <tr class="row-best">
+            <td><span class="mod-tag tag-t">Text</span></td>
+            <td class="mono">RoBERTa-base</td>
+            <td class="mono">RAID</td>
+            <td class="mono">RAID</td>
+            <td class="val-good">99.93%</td>
+            <td class="val-good">0.9993</td>
+          </tr>
+          <tr>
+            <td><span class="mod-tag tag-t">Text</span></td>
+            <td class="mono">RoBERTa-base</td>
+            <td class="mono">RAID</td>
+            <td class="mono">HC3</td>
+            <td class="val-mid">39.37%</td>
+            <td class="val-mid">0.3485</td>
+          </tr>
           <tr>
             <td><span class="mod-tag tag-i">Image</span></td>
             <td class="mono">ResNet-50</td>
@@ -484,65 +500,73 @@
             <td class="val-mid">0.6993</td>
           </tr>
           <tr>
-            <td><span class="mod-tag tag-i">Image</span></td>
-            <td class="mono">ResNet-50 (General)</td>
-            <td class="mono">CIFAKE → OpenFake fine-tune</td>
-            <td class="mono">Real-world photos (n=4)</td>
-            <td class="val-good">4/4 correct</td>
-            <td class="mono">n/a (n=4)</td>
+            <td><span class="mod-tag tag-a">Audio</span></td>
+            <td class="mono">MFCC+CNN</td>
+            <td class="mono">WaveFake (v1)</td>
+            <td class="mono">WaveFake (held-out)</td>
+            <td class="val-mid">87.40%</td>
+            <td class="val-mid">0.8722</td>
           </tr>
           <tr>
             <td><span class="mod-tag tag-a">Audio</span></td>
-            <td class="mono">Wav2Vec2 (v1)</td>
-            <td class="mono">WaveFake</td>
+            <td class="mono">Wav2Vec2</td>
+            <td class="mono">WaveFake (v1)</td>
             <td class="mono">WaveFake (held-out)</td>
             <td class="val-good">99.53%</td>
             <td class="val-good">0.9953</td>
           </tr>
           <tr>
             <td><span class="mod-tag tag-a">Audio</span></td>
-            <td class="mono">MFCC+CNN (v1)</td>
-            <td class="mono">WaveFake</td>
-            <td class="mono">WaveFake (held-out)</td>
-            <td class="val-mid">87.40%</td>
-            <td class="val-mid">0.8722</td>
-          </tr>
-          <tr class="row-best">
-            <td><span class="mod-tag tag-a">Audio</span></td>
-            <td class="mono">Wav2Vec2 (v3, final)</td>
-            <td class="mono">ASVspoof + real codec compression</td>
+            <td class="mono">MFCC+CNN</td>
+            <td class="mono">ASVspoof (v2)</td>
             <td class="mono">ASVspoof (held-out)</td>
-            <td class="val-good">99.20%</td>
-            <td class="val-good">0.9920</td>
+            <td class="val-mid">93.47%</td>
+            <td class="val-mid">0.9346</td>
           </tr>
           <tr>
             <td><span class="mod-tag tag-a">Audio</span></td>
-            <td class="mono">MFCC+CNN (v3, final)</td>
-            <td class="mono">ASVspoof + real codec compression</td>
+            <td class="mono">Wav2Vec2</td>
+            <td class="mono">ASVspoof (v2)</td>
+            <td class="mono">ASVspoof (held-out)</td>
+            <td class="val-good">98.80%</td>
+            <td class="val-good">0.9880</td>
+          </tr>
+          <tr>
+            <td><span class="mod-tag tag-a">Audio</span></td>
+            <td class="mono">MFCC+CNN</td>
+            <td class="mono">ASVspoof + synthetic augmentation (v2_robust)</td>
             <td class="mono">ASVspoof (held-out)</td>
             <td class="val-mid">96.13%</td>
             <td class="val-mid">0.9613</td>
           </tr>
           <tr>
             <td><span class="mod-tag tag-a">Audio</span></td>
-            <td class="mono">Wav2Vec2 (v3, final)</td>
-            <td class="mono">ASVspoof + real codec compression</td>
-            <td class="mono">Real-world voice recording</td>
-            <td class="val-bad">99.9% AI (misclassified)</td>
-            <td class="mono">n/a (n=1)</td>
+            <td class="mono">Wav2Vec2</td>
+            <td class="mono">ASVspoof + synthetic augmentation (v2_robust)</td>
+            <td class="mono">ASVspoof (held-out)</td>
+            <td class="val-good">99.73%</td>
+            <td class="val-good">0.9973</td>
           </tr>
           <tr>
             <td><span class="mod-tag tag-a">Audio</span></td>
-            <td class="mono">MFCC+CNN (v3, final)</td>
-            <td class="mono">ASVspoof + real codec compression</td>
-            <td class="mono">Real-world voice recording</td>
-            <td class="val-bad">85.2% AI (misclassified)</td>
-            <td class="mono">n/a (n=1)</td>
+            <td class="mono">MFCC+CNN</td>
+            <td class="mono">ASVspoof + real codec compression (v3, final)</td>
+            <td class="mono">ASVspoof (held-out)</td>
+            <td class="val-mid">96.13%</td>
+            <td class="val-mid">0.9613</td>
+          </tr>
+          <tr class="row-best">
+            <td><span class="mod-tag tag-a">Audio</span></td>
+            <td class="mono">Wav2Vec2</td>
+            <td class="mono">ASVspoof + real codec compression (v3, final)</td>
+            <td class="mono">ASVspoof (held-out)</td>
+            <td class="val-good">99.20%</td>
+            <td class="val-good">0.9920</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <p class="table-note">Benchmark and real-world results diverge in both directions here, not just one. Audio's final models (v3) score 96-99% on held-out data yet still misclassify a real voice recording. The general-image fine-tune shows the opposite pattern: only 70.00% on its own OpenFake validation split, yet 4/4 correct on independently-sourced real-world photos. Both are reported as measured, not smoothed into a single "it works" number. See "About TruthLens" for details.</p>
+    <p class="table-note">These are held-out / cross-dataset benchmark results, matching the methodology tables in the dissertation deck. They do not include real-world spot-check validation - see "About TruthLens" for how these models perform on independently-sourced content outside any benchmark dataset.</p>
   </section>
 
   <!-- FOOTER -->
