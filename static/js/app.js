@@ -171,15 +171,15 @@ function showResult(type, data) {
   if (!result) return;
   result.style.display = 'flex';
 
-  let iconClass, icon;
+  let iconClass, icon, verdictPct;
   if (data.label === 'AI-Generated') {
-    iconClass = 'ai';        icon = '✗';
+    iconClass = 'ai';        icon = '✗'; verdictPct = data.ai_probability;
   } else if (data.label === 'Likely AI-Generated') {
-    iconClass = 'uncertain'; icon = '?';
+    iconClass = 'uncertain'; icon = '?'; verdictPct = data.ai_probability;
   } else if (data.label.startsWith('Human')) {
-    iconClass = 'human';     icon = '✓';
+    iconClass = 'human';     icon = '✓'; verdictPct = data.human_probability;
   } else {
-    iconClass = 'uncertain'; icon = '?';
+    iconClass = 'uncertain'; icon = '?'; verdictPct = Math.max(data.ai_probability, data.human_probability);
   }
 
   const vicon = document.getElementById(type + '-verdict-icon');
@@ -192,7 +192,7 @@ function showResult(type, data) {
   if (vlabel) vlabel.textContent = data.label;
 
   const vpct = document.getElementById(type + '-verdict-pct');
-  if (vpct) vpct.textContent = data.ai_probability + '%';
+  if (vpct) vpct.textContent = verdictPct + '%';
 
   const subEl = document.getElementById(type + '-verdict-sub');
   if (subEl) {
