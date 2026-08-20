@@ -97,6 +97,20 @@
               <span id="word-count">0 words</span>
               <span class="meta-hint">50+ words required for reliable detection</span>
             </div>
+            <div class="field-row">
+              <div class="field-group">
+                <label class="field-label">Model</label>
+                <select id="text-model" class="select-input">
+                  <option value="roberta_hc3" selected>RoBERTa-base - HC3</option>
+                  <option value="roberta_raid">RoBERTa-base - RAID</option>
+                </select>
+                <p style="font-size:11px; color:var(--text-tertiary); margin-top:5px;">
+                  Two separately fine-tuned checkpoints, one per dataset. Each generalises poorly to the other's
+                  domain - HC3-trained scores 99.76% on HC3 but only 68.27% on RAID, and vice versa - a deliberate
+                  part of this project's cross-dataset findings.
+                </p>
+              </div>
+            </div>
             <div class="progress-wrap" id="text-progress">
               <div class="progress-fill" id="text-fill"></div>
             </div>

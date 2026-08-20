@@ -90,7 +90,9 @@ async function runAnalysis(type) {
   try {
     if (type === 'text') {
       const text     = document.getElementById('text-input').value.trim();
-      const response = await fetch(`${API_URL}/predict/text`, {
+      const modelSel = document.getElementById('text-model');
+      const modelVal = modelSel ? modelSel.value : 'roberta_hc3';
+      const response = await fetch(`${API_URL}/predict/text?model=${modelVal}`, {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({ text })
