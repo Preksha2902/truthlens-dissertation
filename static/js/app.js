@@ -111,10 +111,7 @@ async function runAnalysis(type) {
       const formData  = new FormData();
       formData.append('file', file);
 
-      const modelSel = document.getElementById('image-model');
-      const modelVal = modelSel.value;
-
-      const response = await fetch(`${API_URL}/predict/image?model=${modelVal}`, {
+      const response = await fetch(`${API_URL}/predict/image`, {
         method: 'POST',
         body:   formData
       });
@@ -201,19 +198,15 @@ function showResult(type, data) {
     subEl.textContent = data.confidence + ' · ' + modelName;
   }
 
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      const barAi    = document.getElementById(type + '-bar-ai');
-      const barHuman = document.getElementById(type + '-bar-human');
-      const pctAi    = document.getElementById(type + '-pct-ai');
-      const pctHuman = document.getElementById(type + '-pct-human');
+  const barAi    = document.getElementById(type + '-bar-ai');
+  const barHuman = document.getElementById(type + '-bar-human');
+  const pctAi    = document.getElementById(type + '-pct-ai');
+  const pctHuman = document.getElementById(type + '-pct-human');
 
-      if (barAi)    barAi.style.width    = data.ai_probability + '%';
-      if (barHuman) barHuman.style.width = data.human_probability + '%';
-      if (pctAi)    pctAi.textContent    = data.ai_probability + '%';
-      if (pctHuman) pctHuman.textContent = data.human_probability + '%';
-    });
-  });
+  if (barAi)    barAi.style.width    = data.ai_probability + '%';
+  if (barHuman) barHuman.style.width = data.human_probability + '%';
+  if (pctAi)    pctAi.textContent    = data.ai_probability + '%';
+  if (pctHuman) pctHuman.textContent = data.human_probability + '%';
 
   const sigEl = document.getElementById(type + '-signals');
   if (sigEl) {

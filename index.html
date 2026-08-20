@@ -171,20 +171,11 @@
                 <span id="img-preview-name"></span>
               </div>
             </div>
-            <div class="field-row">
-              <div class="field-group">
-                <label class="field-label">Model</label>
-                <select id="image-model" class="select-input">
-                  <option value="resnet_v2" selected>ResNet-50 - Portrait & Faces</option>
-                  <option value="resnet_v1">ResNet-50 - General Images</option>
-                </select>
-                <p style="font-size:11px; color:var(--text-tertiary); margin-top:5px;">
-                  Portrait & Faces - for selfies and phone photos. General Images - for landscapes, objects and artwork.
-                  Both are ResNet-50 models fine-tuned and validated on real-world photos; the app also auto-detects
-                  faces and falls back to the right model if you pick the wrong one.
-                </p>
-              </div>
-            </div>
+            <p style="font-size:11px; color:var(--text-tertiary); margin:10px 0;">
+              Automatically routed to the right model for your photo - a Portrait & Faces ResNet-50 for selfies and
+              phone photos, a General Images ResNet-50 for landscapes, objects and artwork. Both are fine-tuned and
+              validated on real-world photos; no need to pick one yourself.
+            </p>
             <div class="progress-wrap" id="image-progress">
               <div class="progress-fill" id="image-fill"></div>
             </div>
