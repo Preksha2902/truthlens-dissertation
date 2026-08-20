@@ -111,7 +111,10 @@ async function runAnalysis(type) {
       const formData  = new FormData();
       formData.append('file', file);
 
-      const response = await fetch(`${API_URL}/predict/image`, {
+      const modelSel = document.getElementById('image-model');
+      const modelVal = modelSel.value;
+
+      const response = await fetch(`${API_URL}/predict/image?model=${modelVal}`, {
         method: 'POST',
         body:   formData
       });
